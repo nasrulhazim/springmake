@@ -19,11 +19,22 @@ class Command extends SymfonyCommand
      */
     protected $filesystem;
 
+    /**
+     * Output Interface
+     * @var \Symfony\Component\Console\Output\OutputInterface
+     */
+    protected $output;
+
+    /**
+     * Path to working directory
+     * @var string
+     */
+    protected $src;
+
     public function __construct($name = null)
     {
         parent::__construct($name);
         $this->filesystem = new Filesystem;
-        $this->verifySrc();
     }
 
     /**
@@ -34,17 +45,8 @@ class Command extends SymfonyCommand
     protected function configure()
     {
         $this->setName($this->name)
+            ->addArgument('name', InputArgument::REQUIRED)
             ->setDescription($this->description);
-    }
-
-    /**
-     * Set Arguments
-     *
-     * @return void
-     */
-    protected function setArguments()
-    {
-        $this->addArgument('name', InputArgument::REQUIRED);
     }
 
     /**
@@ -63,9 +65,15 @@ class Command extends SymfonyCommand
      */
     protected function verifySrc()
     {
-        if (!is_dir($this->filesystem->exists('src/main/java'))) {
-            $this->filesystem->mkdir('src/main/java');
+        $this->src = getcwd() . '/src/main/java';
+        if (!is_dir($this->filesystem->exists($this->src))) {
+            $this->filesystem->mkdir($this->src);
         }
+    }
+
+    protected function getStub()
+    {
+        return dirname(__FILE__) . '/stub/' . $this->stub . '.stub';
     }
 
     /**
@@ -77,6 +85,45 @@ class Command extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->output = $output;
+        $this->verifySrc();
 
+        $name    = $input->getArgument('name');
+        $explode = explode('/', $name);
+        $class   = $explode[count($explode) - 1];
+
+        $this->filesystem->copy($this->getStub(), $this->src . '/' . $name . '.java');
+
+        $this->info(ucfirst($this->name) . ' Successfully Created');
+    }
+
+    /**
+     * Output Info Message
+     * @param  string $message [description]
+     * @return void
+     */
+    public function info(string $message)
+    {
+        $this->output->writeln('<info>' . $message . '</info>');
+    }
+
+    /**
+     * Output Comment Message
+     * @param  string $message [description]
+     * @return void
+     */
+    public function comment(string $message)
+    {
+        $this->output->writeln('<comment>' . $message . '</comment>');
+    }
+
+    /**
+     * Output Error Message
+     * @param  string $message [description]
+     * @return void
+     */
+    public function error(string $message)
+    {
+        $this->output->writeln('<error>' . $message . '</error>');
     }
 }

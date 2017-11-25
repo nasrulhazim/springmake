@@ -13,13 +13,13 @@ class MakeModelCommand extends Command
      * Command Name
      * @var string
      */
-    protected $name = 'controller';
+    protected $name = 'model';
 
     /**
      * Command Description
      * @var string
      */
-    protected $description = 'Create a controller class';
+    protected $description = 'Create a model class';
 
     /**
      * Stub Name
