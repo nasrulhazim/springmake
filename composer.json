@@ -21,5 +21,6 @@
     },
     "bin": [
         "springmake"
-    ]
+    ],
+    "minimum-stability" :"dev"
 }
