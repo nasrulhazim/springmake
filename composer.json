@@ -1,0 +1,25 @@
+{
+    "name": "nasrulhazim/springmake",
+    "description": "Create Spring Boot Classes via CLI",
+    "keywords": ["springboot","package"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nasrul Hazim",
+            "email": "nasrulhazim.m@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "NasrulHazim\\Console\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/console": "^3.2",
+        "guzzlehttp/guzzle": "^6.2",
+        "symfony/filesystem": "^3.2"
+    },
+    "bin": [
+        "springmake"
+    ]
+}
