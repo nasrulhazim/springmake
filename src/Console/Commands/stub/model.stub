@@ -1,0 +1,8 @@
+package DummyNamespace;
+
+public class DummyClass {
+
+    public DummyClass() {
+        
+    }
+}
