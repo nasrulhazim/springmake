@@ -88,13 +88,58 @@ class Command extends SymfonyCommand
         $this->output = $output;
         $this->verifySrc();
 
-        $name    = $input->getArgument('name');
-        $explode = explode('/', $name);
-        $class   = $explode[count($explode) - 1];
+        $name = $input->getArgument('name');
+        $path = $this->getFilePath($name);
 
-        $this->filesystem->copy($this->getStub(), $this->src . '/' . $name . '.java');
+        if ($this->filesystem->exists($path)) {
+            $this->error($name . ' already exist.');
+            exit();
+        }
 
-        $this->info(ucfirst($this->name) . ' Successfully Created');
+        $this->filesystem->copy($this->getStub(), $path);
+
+        $content = str_replace([
+            'DummyNamespace', 'DummyClass',
+        ], [
+            $this->getNamespace($name), $this->getClass($name),
+        ], file_get_contents($this->getStub()));
+
+        file_put_contents($path, $content);
+
+        $this->info(ucfirst($this->name) . ' successfully created.');
+    }
+
+    /**
+     * Get File Path
+     * @param  string $name
+     * @return string
+     */
+    protected function getFilePath($name)
+    {
+        return $this->src . '/' . $this->type . '/' . $name . '.java';
+    }
+
+    /**
+     * Get Class Name
+     * @return string
+     */
+    protected function getClass($name)
+    {
+        return substr(strrchr($name, "/"), 1);
+    }
+
+    /**
+     * Get Namespace of the Class
+     * @param  string $name
+     * @return string
+     */
+    protected function getNamespace($name)
+    {
+        $name = str_replace(['/', $this->getClass($name)], ['.', ''], $name);
+        if ($name[strlen($name) - 1] == '.') {
+            $name = substr($name, 0, strlen($name) - 1);
+        }
+        return $this->type . '.' . $name;
     }
 
     /**

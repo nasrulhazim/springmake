@@ -26,4 +26,10 @@ class MakeControllerCommand extends Command
      * @var string
      */
     protected $stub = 'controller';
+
+    /**
+     * Command Type
+     * @var string
+     */
+    protected $type = 'Controllers';
 }

@@ -26,4 +26,10 @@ class MakeModelCommand extends Command
      * @var string
      */
     protected $stub = 'model';
+
+    /**
+     * Command Type
+     * @var string
+     */
+    protected $type = 'Models';
 }
