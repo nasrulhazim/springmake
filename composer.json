@@ -12,12 +12,16 @@
     "autoload": {
         "psr-4": {
             "NasrulHazim\\": "src/"
-        }
+        },
+        "files": [
+            "helper.php"
+        ]
     },
     "require": {
         "symfony/console": "^3.2",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/filesystem": "^3.2"
+        "symfony/filesystem": "^3.2",
+        "symfony/yaml": "3.3"
     },
     "bin": [
         "springmake"
