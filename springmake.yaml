@@ -1,0 +1,9 @@
+path:
+  #base package directory
+  basepackage: com.java.tajul
+  
+  #controller directory
+  controllers: Controllers
+
+  #model directory
+  models: Models
